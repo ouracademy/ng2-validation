@@ -1,0 +1,6 @@
+typings/
+demo/*.js
+demo/**/*.js
+demo/*.map
+demo/**/*.map
+node_modules/

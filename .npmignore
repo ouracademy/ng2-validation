@@ -1,0 +1,9 @@
+demo/
+typings/
+.gitignore
+index.html
+tsconfig.json
+typings.json
+system.config.js
+.npmignore
+index.ts 
