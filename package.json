@@ -40,9 +40,9 @@
   },
   "devDependencies": {
     "systemjs": "0.19.27",
+    "bootstrap": "^3.3.6",
     "@angular/platform-browser": "2.0.0",
     "@angular/platform-browser-dynamic": "2.0.0",
-    "angular2-in-memory-web-api": "0.0.20",
     "concurrently": "^2.2.0",
     "lite-server": "^2.2.2",
     "typescript": "^2.0.2",
