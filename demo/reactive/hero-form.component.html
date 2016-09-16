@@ -7,8 +7,8 @@
 
         <input type="text" id="name" class="form-control" formControlName="name" required>
 
-        <div *ngIf="errors.has('name')" class="alert alert-danger">
-          {{ errors.first('name') }}
+        <div *ngIf="errors.name" class="alert alert-danger">
+          {{ errors.name }}
         </div>
       </div>
 
@@ -26,8 +26,8 @@
           <option *ngFor="let p of powers" [value]="p">{{p}}</option>
         </select>
 
-        <div *ngIf="errors.has('power')" class="alert alert-danger">
-          {{ errors.first('power') }}
+        <div *ngIf="errors.power" class="alert alert-danger">
+          {{ errors.power }}
         </div>
       </div>
 

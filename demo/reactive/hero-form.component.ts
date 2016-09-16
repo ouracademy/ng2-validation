@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Hero } from '../shared/hero';
+import { MessageBag } from '../../src/message-bag';
 
 @Component({
     moduleId: module.id,
@@ -16,7 +17,7 @@ export class HeroFormReactiveComponent implements OnInit {
 
     submitted = false;
 
-    errors: MessageBag;
+    errors: any;
 
     heroForm: FormGroup;
     constructor(private fb: FormBuilder) { }
@@ -75,24 +76,15 @@ const errorMessages = {
 };
 
 class MessageErrorBuilder {
-    seeWhen: Function;
     form: FormGroup;
-    private errors: MessageBag;
+    private errors: any;
 
-    constructor(form: FormGroup, seeWhen?: Function) {
+    constructor(form: FormGroup) {
         this.form = form;
-        if (!!seeWhen) {
-            this.seeWhen = seeWhen;
-        } else {
-            // By default see for errors when is dirty
-            this.seeWhen = function (control: AbstractControl): boolean {
-                return control.dirty;
-            };
-        }
     }
 
     /** Build messages if there's error in the form it's watching */
-    public build(): MessageBag {
+    public build(): any {
         this.errors = new MessageBag();
 
         Object.keys(this.form.controls).forEach((field: string) => {
@@ -104,14 +96,13 @@ class MessageErrorBuilder {
 
     private seeForErrors(field: string): void {
         const control = this.form.get(field);
-        if (!control.valid && this.seeWhen(control)) {
+        if (!control.valid && control.dirty) {
             this.createErrorMessagesFor(field, control);
         }
     }
 
     private createErrorMessagesFor(field: string, control: AbstractControl) {
         Object.keys(control.errors).forEach((errorKey: string) => {
-            console.log(control.errors);
             const baseErrorMessage = (<string>errorMessages[errorKey]).replace(':attribute', field);
             const errorMessage = MessageFormatterFactory.get(errorKey, control.errors).format(baseErrorMessage);
             this.errors.add(field, errorMessage);
@@ -120,73 +111,39 @@ class MessageErrorBuilder {
 }
 
 class MessageFormatterFactory {
-    static get(errorKey: string, error: any): MessageFormatter {
-        let messageFormatter: MessageFormatter = new NoFormat(errorKey, error);
+    static get(errorKey: string, error: any): MessageParser {
+        let messageFormatter: MessageParser = new NoFormat(error);
         switch (errorKey) {
             case 'minlength':
-                messageFormatter = new MinLength(errorKey, error);
+                messageFormatter = new MinLength(error);
                 break;
             case 'maxlength':
-                messageFormatter = new MaxLength(errorKey, error);
+                messageFormatter = new MaxLength(error);
                 break;
         }
         return messageFormatter;
     }
 }
 
-abstract class MessageFormatter {
-    constructor(protected errorKey: string, protected error: any) { }
+abstract class MessageParser {
+    constructor(protected error: any) { }
     abstract format(message: string): string;
 }
 
-class NoFormat extends MessageFormatter {
+class NoFormat extends MessageParser {
     format(message: string): string {
         return message; // do nothing..
     }
 }
 
-class MinLength extends MessageFormatter {
+class MinLength extends MessageParser {
     format(message: string): string {
         return message.replace(':min', this.error.minlength.requiredLength);
     }
 }
 
-class MaxLength extends MessageFormatter {
+class MaxLength extends MessageParser {
     format(message: string): string {
         return message.replace(':max', this.error.maxlength.requiredLength);
-    }
-}
-
-
-class MessageBag {
-    private messages: Map<string, Set<string>>;
-
-    constructor() {
-        this.messages = new Map<string, Set<string>>();
-    }
-
-    add(field: string, message: string) {
-        if (this.has(field)) {
-            let fieldMessages = this.get(field).add(message);
-            this.messages.set(field, fieldMessages);
-        } else {
-            this.messages.set(field, new Set<string>().add(message));
-        }
-    }
-
-    get count(): number {
-        return this.messages.size;
-    }
-
-    first(field: string): string {
-        return this.get(field).values().next().value;
-    }
-
-    get(field: string): Set<string> {
-        return this.messages.get(field);
-    }
-
-    has(field: string) {
-        return this.messages.has(field);
     }
 }

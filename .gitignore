@@ -3,4 +3,8 @@ demo/*.js
 demo/**/*.js
 demo/*.map
 demo/**/*.map
+src/*.js
+src/**/*.js
+src/*.map
+src/**/*.map
 node_modules/
