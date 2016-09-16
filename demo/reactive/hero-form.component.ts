@@ -68,15 +68,10 @@ export class HeroFormReactiveComponent implements OnInit {
     }
 }
 
-// interface ErrorMessage {
-//     rule: string;
-//     message: string;
-// }
-
 const errorMessages = {
-    'required':  ':attribute is required.',
-    'minlength': ':attribute must be at least 4 characters long.',
-    'maxlength': ':attribute cannot be more than 24 characters long.'
+    'required': 'The :attribute is required.',
+    'minlength': 'The :attribute must be at least :min characters long.',
+    'maxlength': 'The :attribute cannot be more than :max characters long.'
 };
 
 class MessageErrorBuilder {
@@ -116,15 +111,52 @@ class MessageErrorBuilder {
 
     private createErrorMessagesFor(field: string, control: AbstractControl) {
         Object.keys(control.errors).forEach((errorKey: string) => {
-            const errorMessage = (<string>errorMessages[errorKey]).replace(':attribute',field);
+            console.log(control.errors);
+            const baseErrorMessage = (<string>errorMessages[errorKey]).replace(':attribute', field);
+            const errorMessage = MessageFormatterFactory.get(errorKey, control.errors).format(baseErrorMessage);
             this.errors.add(field, errorMessage);
         });
     }
 }
 
-class MessageFormatter {
-
+class MessageFormatterFactory {
+    static get(errorKey: string, error: any): MessageFormatter {
+        let messageFormatter: MessageFormatter = new NoFormat(errorKey, error);
+        switch (errorKey) {
+            case 'minlength':
+                messageFormatter = new MinLength(errorKey, error);
+                break;
+            case 'maxlength':
+                messageFormatter = new MaxLength(errorKey, error);
+                break;
+        }
+        return messageFormatter;
+    }
 }
+
+abstract class MessageFormatter {
+    constructor(protected errorKey: string, protected error: any) { }
+    abstract format(message: string): string;
+}
+
+class NoFormat extends MessageFormatter {
+    format(message: string): string {
+        return message; // do nothing..
+    }
+}
+
+class MinLength extends MessageFormatter {
+    format(message: string): string {
+        return message.replace(':min', this.error.minlength.requiredLength);
+    }
+}
+
+class MaxLength extends MessageFormatter {
+    format(message: string): string {
+        return message.replace(':max', this.error.maxlength.requiredLength);
+    }
+}
+
 
 class MessageBag {
     private messages: Map<string, Set<string>>;
