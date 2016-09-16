@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Hero } from '../shared/hero';
 
@@ -15,6 +15,15 @@ export class HeroFormReactiveComponent implements OnInit {
     hero = new Hero(18, 'Dr. WhatIsHisName', this.powers[0], 'Dr. What');
 
     submitted = false;
+
+    errors: MessageBag;
+
+    heroForm: FormGroup;
+    constructor(private fb: FormBuilder) { }
+
+    ngOnInit(): void {
+        this.buildForm();
+    }
 
     onSubmit() {
         this.submitted = true;
@@ -34,13 +43,6 @@ export class HeroFormReactiveComponent implements OnInit {
         setTimeout(() => this.active = true, 0);
     }
 
-    heroForm: FormGroup;
-    constructor(private fb: FormBuilder) { }
-
-    ngOnInit(): void {
-        this.buildForm();
-    }
-
     buildForm(): void {
         this.heroForm = this.fb.group({
             'name': [this.hero.name, [
@@ -49,55 +51,110 @@ export class HeroFormReactiveComponent implements OnInit {
                 Validators.maxLength(24)
             ]
             ],
-            'alterEgo': [this.hero.alterEgo],
+            'alterEgo': [this.hero.alterEgo, Validators.minLength(4)],
             'power': [this.hero.power, Validators.required]
         });
 
         this.heroForm.valueChanges
-            .subscribe(data => this.onValueChanged(data));
+            .subscribe(data => {
+                this.seeForErrors();
+            });
 
-        this.onValueChanged(); // (re)set validation messages now
+        this.seeForErrors(); // (re)set validation messages now
     }
 
-
-    onValueChanged(data?: any) {
-        if (!this.heroForm) { return; }
-        const form = this.heroForm;
-
-        for (const field in this.formErrors) {
-            // clear previous error message (if any)
-            this.formErrors[field] = '';
-            const control = form.get(field);
-
-            if (control && control.dirty && !control.valid) {
-                const messages = this.validationMessages[field];
-                for (const key in control.errors) {
-                    this.formErrors[field] += messages[key] + ' ';
-                }
-            }
-        }
+    private seeForErrors() {
+        this.errors = new MessageErrorBuilder(this.heroForm).build();
     }
-
-    formErrors = {
-        'name': '',
-        'power': ''
-    };
-
-    validationMessages = {
-        'name': {
-            'required': 'Name is required.',
-            'minlength': 'Name must be at least 4 characters long.',
-            'maxlength': 'Name cannot be more than 24 characters long.'
-        },
-        'power': {
-            'required': 'Power is required.'
-        }
-    };
 }
 
+// interface ErrorMessage {
+//     rule: string;
+//     message: string;
+// }
 
-/*
-Copyright 2016 Google Inc. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at http://angular.io/license
-*/
+const errorMessages = {
+    'required':  ':attribute is required.',
+    'minlength': ':attribute must be at least 4 characters long.',
+    'maxlength': ':attribute cannot be more than 24 characters long.'
+};
+
+class MessageErrorBuilder {
+    seeWhen: Function;
+    form: FormGroup;
+    private errors: MessageBag;
+
+    constructor(form: FormGroup, seeWhen?: Function) {
+        this.form = form;
+        if (!!seeWhen) {
+            this.seeWhen = seeWhen;
+        } else {
+            // By default see for errors when is dirty
+            this.seeWhen = function (control: AbstractControl): boolean {
+                return control.dirty;
+            };
+        }
+    }
+
+    /** Build messages if there's error in the form it's watching */
+    public build(): MessageBag {
+        this.errors = new MessageBag();
+
+        Object.keys(this.form.controls).forEach((field: string) => {
+            this.seeForErrors(field);
+        });
+
+        return this.errors;
+    }
+
+    private seeForErrors(field: string): void {
+        const control = this.form.get(field);
+        if (!control.valid && this.seeWhen(control)) {
+            this.createErrorMessagesFor(field, control);
+        }
+    }
+
+    private createErrorMessagesFor(field: string, control: AbstractControl) {
+        Object.keys(control.errors).forEach((errorKey: string) => {
+            const errorMessage = (<string>errorMessages[errorKey]).replace(':attribute',field);
+            this.errors.add(field, errorMessage);
+        });
+    }
+}
+
+class MessageFormatter {
+
+}
+
+class MessageBag {
+    private messages: Map<string, Set<string>>;
+
+    constructor() {
+        this.messages = new Map<string, Set<string>>();
+    }
+
+    add(field: string, message: string) {
+        if (this.has(field)) {
+            let fieldMessages = this.get(field).add(message);
+            this.messages.set(field, fieldMessages);
+        } else {
+            this.messages.set(field, new Set<string>().add(message));
+        }
+    }
+
+    get count(): number {
+        return this.messages.size;
+    }
+
+    first(field: string): string {
+        return this.get(field).values().next().value;
+    }
+
+    get(field: string): Set<string> {
+        return this.messages.get(field);
+    }
+
+    has(field: string) {
+        return this.messages.has(field);
+    }
+}
