@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { MessageBag } from './message-bag';
 import { ValidationMessagesLoader } from './validation-messages-loader.service';
 import { Observable } from 'rxjs/Observable';
@@ -9,7 +9,7 @@ import 'rxjs/add/observable/of';
 export class ValidationMessagesService {
     private form: FormGroup;
     private errors: MessageBag;
-    private validationMessages: any;
+    private validationMessagesRules: ValidationMessagesRules;
 
     constructor(private messageLoader: ValidationMessagesLoader) { }
 
@@ -28,15 +28,15 @@ export class ValidationMessagesService {
                 this.seeForErrorsInField(field);
             });
         } else {
-            this.messageLoader.load().subscribe((errorMessages) => {
-                this.validationMessages = errorMessages;
+            this.messageLoader.load().subscribe((validationMessageRules) => {
+                this.validationMessagesRules = new ValidationMessagesRules(validationMessageRules);
             });
         }
         return this.errors;
     }
 
     private get messageWasLoaded(): boolean {
-        return !!this.validationMessages;
+        return !!this.validationMessagesRules;
     }
 
     private seeForErrorsInField(field: string): void {
@@ -47,27 +47,64 @@ export class ValidationMessagesService {
         }
     }
 
-    private createErrorMessagesFor(field: string, errors: any): string {
-        const errorKey = Object.keys(errors)[0];
+    //TODO: refactor this to a new class
+    attribute: string;
+    errorKey: string;
+    errorMessage: string;
+    error: any;
+    private createErrorMessagesFor(attribute: string, errors: any): string {
+        this.attribute = attribute;
+        this.error = errors;
+        this.errorKey = Object.keys(errors)[0];
 
-        let attributeName = field;
-        const customAttributes = this.validationMessages['customAttributes'];
-        console.log(customAttributes);
-        
-        const customAttribute = Object.keys(customAttributes)
-                .find((attribute) => {
-                    return attribute === field;
-                }
-                    );
-
-        if (!!customAttribute) {
-            attributeName = customAttributes[customAttribute];
-        }
-
-        const errorMessageWithReplacedAttribute = this.validationMessages[errorKey].replace(':attribute', attributeName);
-        return MessageParserFactory.get(errorKey, errors).format(errorMessageWithReplacedAttribute);
+        return this.parseAttributePlaceHolders().parseErrorPlaceHolders();
     }
 
+    parseAttributePlaceHolders() {
+        const attributePlaceHolder = this.validationMessagesRules
+                                         .getAttributePlaceHolder(this.attribute);
+        this.errorMessage = this.validationMessagesRules
+                                .getErrorMessage(this.errorKey)
+                                .replace(':attribute', attributePlaceHolder);
+        return this;
+    }
+
+    parseErrorPlaceHolders(): string {
+        return MessageParserFactory.get(this.errorKey, this.error).format(this.errorMessage);
+    }
+
+}
+
+class ValidationMessagesRules {
+    constructor(private validationMessagesRules: any) {
+    }
+
+    getAttributePlaceHolder(attribute: string): string {
+        if (this.containsCustomAttribute(attribute)) { // Custom has priority
+            return this.getCustomAttributes(attribute);
+        }
+        return attribute;
+    }
+
+
+    getErrorMessage(errorKey: string): string {
+        if (errorKey === 'customAttributes') {
+            throw new SyntaxError('customAttributes is reserved');
+        }
+        return this.validationMessagesRules[errorKey];
+    }
+
+    private containsCustomAttribute(attribute: string): boolean {
+        return !!this.getCustomAttributes(attribute);
+    }
+
+    private getCustomAttributes(attribute: string): string {
+        return this.customAttributes[attribute];
+    }
+
+    private get customAttributes(): any {
+        return this.validationMessagesRules['customAttributes'];
+    }
 }
 
 class MessageParserFactory {
