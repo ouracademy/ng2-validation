@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Hero } from '../shared/hero';
+import { ValidationMessagesService } from '../../src/message-error-builder';
 import { MessageBag } from '../../src/message-bag';
 
 @Component({
@@ -17,10 +18,12 @@ export class HeroFormReactiveComponent implements OnInit {
 
     submitted = false;
 
-    errors: any;
+    errors: MessageBag;
 
     heroForm: FormGroup;
-    constructor(private fb: FormBuilder) { }
+
+    constructor(private fb: FormBuilder,
+        private validationMessagesService: ValidationMessagesService) { }
 
     ngOnInit(): void {
         this.buildForm();
@@ -52,7 +55,7 @@ export class HeroFormReactiveComponent implements OnInit {
                 Validators.maxLength(24)
             ]
             ],
-            'alterEgo': [this.hero.alterEgo, Validators.minLength(4)],
+            'alterEgo': [this.hero.alterEgo, Validators.maxLength(4)],
             'power': [this.hero.power, Validators.required]
         });
 
@@ -65,85 +68,8 @@ export class HeroFormReactiveComponent implements OnInit {
     }
 
     private seeForErrors() {
-        this.errors = new MessageErrorBuilder(this.heroForm).build();
-    }
-}
-
-const errorMessages = {
-    'required': 'The :attribute is required.',
-    'minlength': 'The :attribute must be at least :min characters long.',
-    'maxlength': 'The :attribute cannot be more than :max characters long.'
-};
-
-class MessageErrorBuilder {
-    form: FormGroup;
-    private errors: any;
-
-    constructor(form: FormGroup) {
-        this.form = form;
-    }
-
-    /** Build messages if there's error in the form it's watching */
-    public build(): any {
-        this.errors = new MessageBag();
-
-        Object.keys(this.form.controls).forEach((field: string) => {
-            this.seeForErrors(field);
-        });
-
-        return this.errors;
-    }
-
-    private seeForErrors(field: string): void {
-        const control = this.form.get(field);
-        if (!control.valid && control.dirty) {
-            this.createErrorMessagesFor(field, control);
-        }
-    }
-
-    private createErrorMessagesFor(field: string, control: AbstractControl) {
-        Object.keys(control.errors).forEach((errorKey: string) => {
-            const baseErrorMessage = (<string>errorMessages[errorKey]).replace(':attribute', field);
-            const errorMessage = MessageFormatterFactory.get(errorKey, control.errors).format(baseErrorMessage);
-            this.errors.add(field, errorMessage);
-        });
-    }
-}
-
-class MessageFormatterFactory {
-    static get(errorKey: string, error: any): MessageParser {
-        let messageFormatter: MessageParser = new NoFormat(error);
-        switch (errorKey) {
-            case 'minlength':
-                messageFormatter = new MinLength(error);
-                break;
-            case 'maxlength':
-                messageFormatter = new MaxLength(error);
-                break;
-        }
-        return messageFormatter;
-    }
-}
-
-abstract class MessageParser {
-    constructor(protected error: any) { }
-    abstract format(message: string): string;
-}
-
-class NoFormat extends MessageParser {
-    format(message: string): string {
-        return message; // do nothing..
-    }
-}
-
-class MinLength extends MessageParser {
-    format(message: string): string {
-        return message.replace(':min', this.error.minlength.requiredLength);
-    }
-}
-
-class MaxLength extends MessageParser {
-    format(message: string): string {
-        return message.replace(':max', this.error.maxlength.requiredLength);
+        this.validationMessagesService
+            .build(this.heroForm)
+            .subscribe((errors: MessageBag) => this.errors = errors);
     }
 }

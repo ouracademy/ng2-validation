@@ -1,5 +1,6 @@
 import { NgModule }     from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpModule } from '@angular/http';
 
 import { SubmittedComponent }          from './submitted.component';
 
@@ -7,7 +8,8 @@ import { SubmittedComponent }          from './submitted.component';
   imports:      [ CommonModule],
   declarations: [ SubmittedComponent ],
   exports:      [ SubmittedComponent,
-                  CommonModule ]
+                  CommonModule,
+                  HttpModule ]
 })
 export class SharedModule { }
 

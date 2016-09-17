@@ -3,11 +3,13 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent }           from './app.component';
 import { HeroFormReactiveModule } from './reactive/hero-form.module';
+import { ValidationMessagesModule } from '../src/validation-messages.module';
 
 @NgModule({
   imports: [
     BrowserModule,
-    HeroFormReactiveModule
+    HeroFormReactiveModule,
+    ValidationMessagesModule.forRoot()
   ],
   declarations: [ AppComponent ],
   bootstrap:    [ AppComponent ]

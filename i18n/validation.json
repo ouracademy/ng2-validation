@@ -1,0 +1,5 @@
+{
+    "required": "The :attribute is required.",
+    "minlength": "The :attribute must be at least :min characters long.",
+    "maxlength": "The :attribute cannot be more than :max characters long."
+}
