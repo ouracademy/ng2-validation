@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { Http, HttpModule } from '@angular/http';
-import { ValidationMessagesService } from './message-error-builder';
+import { ValidationMessagesService } from './validation-messages.service';
 
 import { ValidationMessagesLoader, StaticMessageLoader } from './validation-messages-loader.service';
 

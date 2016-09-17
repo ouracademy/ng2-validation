@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Hero } from '../shared/hero';
-import { ValidationMessagesService } from '../../src/message-error-builder';
-import { MessageBag } from '../../src/message-bag';
+import { MessageBag, ValidationMessagesService } from '../../src';
 
 @Component({
     moduleId: module.id,

@@ -1,3 +1,3 @@
 export * from './message-bag';
-export * from './message-error-builder';
+export * from './validation-messages.service';
 export * from './validation-messages.module';
