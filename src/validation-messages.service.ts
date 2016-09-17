@@ -8,49 +8,66 @@ import 'rxjs/add/observable/of';
 @Injectable()
 export class ValidationMessagesService {
     private form: FormGroup;
-    private errors: any;
-    private errorMessages: any;
+    private errors: MessageBag;
+    private validationMessages: any;
 
     constructor(private messageLoader: ValidationMessagesLoader) { }
 
-    /** Build messages if there's error in the form it's watching */
-    public build(form: FormGroup): Observable<MessageBag> {
-        return Observable.of(this.buildErrors(form));
+    /** Create messages if there's errors in the form it's watching
+     *  @returns a MessageBag (if no errors an empty MessageBag)  
+     */
+    public build(watchingForm: FormGroup): Observable<MessageBag> {
+        this.form = watchingForm;
+        return Observable.of(this.buildErrors());
     }
 
-    private buildErrors(form: FormGroup): MessageBag {
+    private buildErrors(): MessageBag {
         this.errors = new MessageBag();
         if (this.messageWasLoaded) {
-            this.form = form;
             Object.keys(this.form.controls).forEach((field: string) => {
-                this.seeForErrors(field);
+                this.seeForErrorsInField(field);
             });
         } else {
             this.messageLoader.load().subscribe((errorMessages) => {
-                this.errorMessages = errorMessages;
+                this.validationMessages = errorMessages;
             });
         }
         return this.errors;
     }
 
     private get messageWasLoaded(): boolean {
-        return !!this.errorMessages;
+        return !!this.validationMessages;
     }
 
-    private seeForErrors(field: string): void {
+    private seeForErrorsInField(field: string): void {
         const control = this.form.get(field);
         if (!control.valid && control.dirty) {
-            this.createErrorMessagesFor(field, control);
+            const errorMessage = this.createErrorMessagesFor(field, control.errors);
+            this.errors.add(field, errorMessage);
         }
     }
 
-    private createErrorMessagesFor(field: string, control: AbstractControl) {
-        Object.keys(control.errors).forEach((errorKey: string) => {
-            const baseErrorMessage = this.errorMessages[errorKey].replace(':attribute', field);
-            const errorMessage = MessageParserFactory.get(errorKey, control.errors).format(baseErrorMessage);
-            this.errors.add(field, errorMessage);
-        });
+    private createErrorMessagesFor(field: string, errors: any): string {
+        const errorKey = Object.keys(errors)[0];
+
+        let attributeName = field;
+        const customAttributes = this.validationMessages['customAttributes'];
+        console.log(customAttributes);
+        
+        const customAttribute = Object.keys(customAttributes)
+                .find((attribute) => {
+                    return attribute === field;
+                }
+                    );
+
+        if (!!customAttribute) {
+            attributeName = customAttributes[customAttribute];
+        }
+
+        const errorMessageWithReplacedAttribute = this.validationMessages[errorKey].replace(':attribute', attributeName);
+        return MessageParserFactory.get(errorKey, errors).format(errorMessageWithReplacedAttribute);
     }
+
 }
 
 class MessageParserFactory {

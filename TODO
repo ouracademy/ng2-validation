@@ -1,7 +1,9 @@
-1. Add custom Validation Attributes
+1. Add custom Validation Attributes(completed)
 2. Add email validation
 3. Add custom Validation Language Lines
 4. Add size validation
 5. Add active_url validation
 6. Add more validations if needed
+7. Add work with composite form groups
+8. Add work with unique form control
 7. Integrate with https://github.com/ocombe/ng2-translate

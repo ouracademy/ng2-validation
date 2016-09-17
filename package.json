@@ -1,7 +1,7 @@
 {
   "name": "ng2-validation",
   "version": "1.0.0",
-  "description": "A validation library for angular 2",
+  "description": "A simple validation library for angular 2",
   "main": "src/index.js",
   "scripts": {
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",

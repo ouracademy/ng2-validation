@@ -14,6 +14,6 @@ export class StaticMessageLoader implements ValidationMessagesLoader {
 
     load(): Observable<any> {
         return this.http.get(`${this.prefix}/validation${this.suffix}`)
-            .map((res: Response) => res.json());
+             .map((res: Response) => res.json());
     }
 }

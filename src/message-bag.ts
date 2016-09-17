@@ -33,7 +33,7 @@ export class TypedMessageBag {
 
 /** A reflective message bag */
 export class MessageBag extends TypedMessageBag {
-    add(field, message) {
+    add(field: string, message: string) {
         super.add(field, message);
         this[field] = message;
     }
