@@ -7,3 +7,4 @@
 7. Add work with composite form groups
 8. Add work with unique form control
 7. Integrate with https://github.com/ocombe/ng2-translate
+ADD peer dependencies, remove src/index

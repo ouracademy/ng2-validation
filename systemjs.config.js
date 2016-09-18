@@ -10,10 +10,9 @@
     },
     // map tells the System loader where to look for things
     map: {
-      // our demo is within the demo folder
-      app: 'demo',
-      src: 'src',
-      json: 'npm:systemjs-plugin-json/json.js',
+      app: 'demo', // the demo folder
+      src: 'src', // the validation module by itself
+      json: 'npm:systemjs-plugin-json/json.js', // json plugin to load validation.js,
       // angular bundles,
       '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
       '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
