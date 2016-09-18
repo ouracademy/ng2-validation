@@ -1,5 +1,5 @@
 {
-  "name": "ng2-validation",
+  "name": "ng2-custom-validation",
   "version": "1.0.0",
   "description": "A simple validation library for angular 2",
   "main": "src/index.js",
