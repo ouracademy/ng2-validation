@@ -17,7 +17,7 @@
         <input type="text" id="alterEgo" class="form-control" formControlName="alterEgo">
       </div>
       <!--Using typed form-->
-      <!--And using custom attribute-->
+      <!--And using custom attribute, see i18n/validation.json file-->
       <div *ngIf="errors.has('alterEgo')" class="alert alert-danger">
         {{ errors.first('alterEgo') }}
       </div>

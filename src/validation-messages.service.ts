@@ -47,32 +47,37 @@ export class ValidationMessagesService {
         }
     }
 
-    //TODO: refactor this to a new class
-    attribute: string;
-    errorKey: string;
-    errorMessage: string;
-    error: any;
     private createErrorMessagesFor(attribute: string, errors: any): string {
-        this.attribute = attribute;
-        this.error = errors;
-        this.errorKey = Object.keys(errors)[0];
+        return new MessageParser(errors, this.validationMessagesRules).parse(attribute);
+    }
+}
 
-        return this.parseAttributePlaceHolders().parseErrorPlaceHolders();
+class MessageParser {
+    errorMessage: string;
+    errorKey: string;
+
+    constructor(
+        private errors: any,
+        private validationMessagesRules: ValidationMessagesRules) {
+        this.errorKey = Object.keys(errors)[0];
     }
 
-    parseAttributePlaceHolders() {
+    parse(attribute: string): string {
+        return this.parseAttributePlaceHolders(attribute).parseErrorPlaceHolders();
+    }
+
+    private parseAttributePlaceHolders(attribute: string): MessageParser {
         const attributePlaceHolder = this.validationMessagesRules
-                                         .getAttributePlaceHolder(this.attribute);
+            .getAttributePlaceHolder(attribute);
         this.errorMessage = this.validationMessagesRules
-                                .getErrorMessage(this.errorKey)
-                                .replace(':attribute', attributePlaceHolder);
+            .getErrorMessage(this.errorKey)
+            .replace(':attribute', attributePlaceHolder);
         return this;
     }
 
-    parseErrorPlaceHolders(): string {
-        return MessageParserFactory.get(this.errorKey, this.error).format(this.errorMessage);
+    private parseErrorPlaceHolders(): string {
+        return MessageParserFactory.get(this.errorKey, this.errors).format(this.errorMessage);
     }
-
 }
 
 class ValidationMessagesRules {
@@ -85,7 +90,6 @@ class ValidationMessagesRules {
         }
         return attribute;
     }
-
 
     getErrorMessage(errorKey: string): string {
         if (errorKey === 'customAttributes') {
@@ -108,7 +112,7 @@ class ValidationMessagesRules {
 }
 
 class MessageParserFactory {
-    static get(errorKey: string, error: any): MessageParser {
+    static get(errorKey: string, error: any): ErrorMessageParser {
         switch (errorKey) {
             case 'minlength': return new MinLength(error);
             case 'maxlength': return new MaxLength(error);
@@ -118,24 +122,24 @@ class MessageParserFactory {
     }
 }
 
-abstract class MessageParser {
+abstract class ErrorMessageParser {
     constructor(protected error: any) { }
     abstract format(message: string): string;
 }
 
-class NoFormat extends MessageParser {
+class NoFormat extends ErrorMessageParser {
     format(message: string): string {
         return message; // do nothing..
     }
 }
 
-class MinLength extends MessageParser {
+class MinLength extends ErrorMessageParser {
     format(message: string): string {
         return message.replace(':min', this.error.minlength.requiredLength);
     }
 }
 
-class MaxLength extends MessageParser {
+class MaxLength extends ErrorMessageParser {
     format(message: string): string {
         return message.replace(':max', this.error.maxlength.requiredLength);
     }
