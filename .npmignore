@@ -1,9 +1,10 @@
 demo/
+i18n/
 typings/
 .gitignore
 index.html
+system.config.js
+TODO
 tsconfig.json
 typings.json
-system.config.js
-.npmignore
-index.ts 
+tslint.json
