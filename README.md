@@ -34,8 +34,10 @@ Tired to always write this in your angular 2 app:
 
 ```
 
+(The above is an example. This package for now is working with with Reactive Driven Forms, it wasn't tested with Template Driven Forms)
+
 And repeat this to every field in every form in every view.
-This package deals with it, using a uniform approach to make validation messages based on the amazing [Laravel framework](https://laravel.com/docs/5.3/validation#working-with-error-messages)
+This package deals with it, using a uniform approach to make validation messages based on the amazing [Laravel framework](https://laravel.com/docs/5.3/validation#working-with-error-messages).
 So you can instead do this: 
 
 ```html
@@ -70,3 +72,70 @@ npm install ng2-custom-validation --save
 ```
 
 ### Working with SystemJS
+
+## Usage
+#### 1. Import the `ValidationMessagesModule`:
+It is recommended to import `ValidationMessagesModule.forRoot()` in the NgModule of your application.
+
+The `forRoot` method is a convention for modules that provide a singleton service (such as the Angular 2 Router), you can also use it to configure the `ValidationMessagesLoader` . By default it will use the `StaticMessageLoader`, but you can provide another loader instead as a parameter of this method.
+
+For now ng2-custom-validation requires HttpModule from `@angular/http` (this will change soon).
+
+
+```ts
+import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
+import { AppComponent }           from './app.component';
+import { ValidationMessagesModule } from 'ng2-custom-validation/src/index';
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    HttpModule,
+    HeroFormReactiveModule,
+    ValidationMessagesModule.forRoot()
+  ],
+  declarations: [ AppComponent ],
+  bootstrap:    [ AppComponent ]
+})
+export class AppModule { }
+```
+
+If you have multiple NgModules and you use one as a shared NgModule (that you import in all of your other NgModules), don't forget that you can use it to export the `ValidationMessagesModule` that you imported in order to avoid having to import it multiple times.
+
+```ts
+@NgModule({
+    imports: [
+        BrowserModule,
+        HttpModule,
+        ValidationMessagesModule.forRoot()
+    ],
+    exports: [BrowserModule, HttpModule, ValidationMessagesModule],
+})
+export class SharedModule {
+}
+```
+
+By default, only the `StaticMessageLoader` is available. It will search for files in i18n/*.json, if you want you can customize this behavior by changing the default prefix/suffix:
+
+```ts
+@NgModule({
+    imports: [
+        BrowserModule,
+        HttpModule,
+        TranslateModule.forRoot({ 
+          provide: TranslateLoader,
+          useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json'),
+          deps: [Http]
+        })
+    ],
+    exports: [BrowserModule, HttpModule, TranslateModule],
+})
+export class SharedModule {
+}
+```
+
+## FAQ
+#### I'm getting an error `No provider for Http!`
+Because of the StaticMessageLoader you have to load the HttpModule from `@angular/http`, even if you don't use this Loader
