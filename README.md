@@ -74,6 +74,8 @@ npm install ng2-custom-validation --save
 ### Working with SystemJS
 
 ## Usage
+The steps here are very similar to the [ng2-translate](https://github.com/ocombe/ng2-translate) package, because it's based on it.
+
 #### 1. Import the `ValidationMessagesModule`:
 It is recommended to import `ValidationMessagesModule.forRoot()` in the NgModule of your application.
 
@@ -124,13 +126,13 @@ By default, only the `StaticMessageLoader` is available. It will search for file
     imports: [
         BrowserModule,
         HttpModule,
-        TranslateModule.forRoot({ 
-          provide: TranslateLoader,
-          useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json'),
+        ValidationMessagesModule.forRoot({ 
+          provide: ValidationMessagesLoader,
+          useFactory: (http: Http) => new StaticMessageLoader(http, '/assets/i18n', '.json'),
           deps: [Http]
         })
     ],
-    exports: [BrowserModule, HttpModule, TranslateModule],
+    exports: [BrowserModule, HttpModule, ValidationMessagesModule],
 })
 export class SharedModule {
 }
