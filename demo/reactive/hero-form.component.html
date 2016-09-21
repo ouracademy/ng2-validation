@@ -23,6 +23,14 @@
       </div>
 
       <div class="form-group">
+        <label for="fullName">Just alphabetic caracters(with Validators.pattern)</label>
+        <input type="text" id="fullName" class="form-control" formControlName="fullName">
+      </div>
+      <div *ngIf="errors.has('fullName')" class="alert alert-danger">
+        {{ errors.first('fullName') }}
+      </div>
+
+      <div class="form-group">
         <label for="power">Hero Power</label>
         <select id="power" class="form-control" formControlName="power" required>
           <option *ngFor="let p of powers" [value]="p">{{p}}</option>

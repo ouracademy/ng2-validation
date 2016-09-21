@@ -52,10 +52,11 @@ export class HeroFormReactiveComponent implements OnInit {
                 Validators.required,
                 Validators.minLength(4),
                 Validators.maxLength(24)
-            ]
-            ],
+            ]],
             'alterEgo': [this.hero.alterEgo, Validators.maxLength(4)],
-            'power': [this.hero.power, Validators.required]
+            'power': [this.hero.power, Validators.required],
+            // The above are more field examples
+            'fullName': ['', Validators.pattern('[a-zA-Z]*')] // An example of use regex pattern
         });
 
         this.heroForm.valueChanges
