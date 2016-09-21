@@ -102,6 +102,11 @@ meta: {
     }
 ```
 
+And remember to install the systemjs-plugin-json
+```sh
+npm install systemjs-plugin-json --save
+```
+
 ## Usage
 The steps here are very similar to the [ng2-translate](https://github.com/ocombe/ng2-translate) package, because it's based on it.
 
