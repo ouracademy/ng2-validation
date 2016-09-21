@@ -34,7 +34,10 @@ class ErrorMessageParserFactory {
         switch (errorKey) {
             case 'minlength': return new MinLength(error);
             case 'maxlength': return new MaxLength(error);
-            case 'required': return new NoFormat(error);
+            case 'required':
+            case 'pattern': // Not create a special ErrorPlaceholderParser because it's difficult to
+                            // a user to understand the Regular Expression Pattern
+                            return new NoFormat(error);
             default: throw SyntaxError(`The ${errorKey} isn't a validation rule`);
         }
     }
