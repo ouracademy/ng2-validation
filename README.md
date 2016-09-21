@@ -2,11 +2,11 @@
 
 A collection of classes to help handling display error messages on your form.
 
-
 * [Reason](#reason)
 * [Installation](#installation)
 * [Usage](#usage)
-* [FAQ](#faq) 
+* [Validators](#validators)
+* [FAQ](#faq)
 
 ## Reason
 
@@ -34,7 +34,7 @@ Tired to always write this in your angular 2 app:
 
 ```
 
-(The above is an example. This package for now is working with with Reactive Driven Forms, it wasn't tested with Template Driven Forms)
+(The above is an example. This package for now is working with with Reactive Driven Forms, it wasn't tested with Template Driven Forms..probably it will work, if work send as a message)
 
 And repeat this to every field in every form in every view.
 This package deals with it, using a uniform approach to make validation messages based on the amazing [Laravel framework](https://laravel.com/docs/5.3/validation#working-with-error-messages).
@@ -56,14 +56,18 @@ So just customize your validation messages, like:
 
 ```json
 {
-    "required": "The :attribute is required.",
-    "minlength": "The :attribute must be at least :min characters long.",
+    "required": "The :attribute field is required.",
+    "minlength": "The :attribute field must be at least :min characters long.",
     "maxlength": "The :attribute cannot be more than :max characters long.",
+    "pattern"  : "The :attribute format is invalid.",
     "customAttributes" : {
-        "alterEgo" : "secondSelf"
+        "name" : "super name"
     }
 }
 ```
+
+So if you write a name with less than 4 characters, the template will show the message `The super name field must be at least 4 characters long.`. The `:attribute` placeholder will be replaced for super name because it's on `customAttributes`(if there isn't,  it will replace with the same field name - `name` in this case) and the `:min` placeholder with the corresponding validation rule (4 characters). 
+
 
 ## Installation
 Install the npm module by running:
@@ -72,6 +76,31 @@ npm install ng2-custom-validation --save
 ```
 
 ### Working with SystemJS
+Add to your `systemjs.config.js`
+
+```js
+map: {
+      // other stuff...
+      'ng2-custom-validation': 'npm:ng2-custom-validation',
+      json: 'npm:systemjs-plugin-json/json.js',
+    },
+```
+
+Also if you are using the default configurations, see bellow, you will probably add also this:
+```js
+map: {
+      // other stuff...and ng2-custom-validation of course
+      json: 'npm:systemjs-plugin-json/json.js',
+    },
+packages: {
+     // more stuff
+},
+meta: {
+      'i18n/*.json': {
+        loader: 'json'
+      }
+    }
+```
 
 ## Usage
 The steps here are very similar to the [ng2-translate](https://github.com/ocombe/ng2-translate) package, because it's based on it.
@@ -137,6 +166,18 @@ By default, only the `StaticMessageLoader` is available. It will search for file
 export class SharedModule {
 }
 ```
+
+#### 2. We are working on it...
+
+## Validators
+This is the list of the supported validations (it will grow...)
+
+#### angular2 built-in validators
+
+- required
+- minlength
+- maxlength
+- pattern
 
 ## FAQ
 #### I'm getting an error `No provider for Http!`
