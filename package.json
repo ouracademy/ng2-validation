@@ -2,7 +2,7 @@
   "name": "ng2-custom-validation",
   "version": "1.0.2",
   "description": "A simple validation library for angular 2",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "lite": "lite-server",
