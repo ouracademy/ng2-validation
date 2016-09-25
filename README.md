@@ -1,4 +1,8 @@
-#ng2-validation
+#ng2-custom-validation [![NPM version][npm-version-image]][npm-url] [![NPM downloads][npm-downloads-image]][npm-url] 
+
+[npm-downloads-image]: http://img.shields.io/npm/dm/ng2-custom-validation.svg?style=flat
+[npm-version-image]: http://img.shields.io/npm/v/ng2-custom-validation.svg?style=flat
+[npm-url]: https://www.npmjs.com/package/ng2-custom-validation
 
 A collection of classes to help handling display error messages on your form. (THIS PACKAGE IT'S ON CONSTRUCTION)
 
