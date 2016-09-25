@@ -177,7 +177,63 @@ This is the list of the supported validations (it will grow...)
 - pattern
 
 ## Customizing
+There are two ways of customizing the validationMessages: extending the default validation messages or providing your own loader. In the [demo](https://github.com/ouracademy/ng2-validation/tree/master/demo) there are an example of using both ways.
 
+### 1. Using defaultValidationMessages
+Create your file of custom validation messages (for example `custom-validation`)
+```ts
+import { defaultValidationMessages } from '../src';
+
+// An example of overriding the name field to super name
+//do the same with any validation message (min, required...)
+defaultValidationMessages.customAttributes = {
+    'name': 'super name'
+}; 
+```
+
+And import it in your NgModule(for example the RootComponent):
+```ts
+import { NgModule }      from '@angular/core';
+import { AppComponent }           from './app.component';
+//...import modules
+import { ValidationMessagesModule } from 'ng2-custom-validation/src/index';
+import './custom-validation';
+
+@NgModule({
+  imports: [
+    //your modules
+    ValidationMessagesModule.forRoot()
+  ],
+  declarations: [ AppComponent ],
+  bootstrap:    [ AppComponent ]
+})
+export class AppModule { }
+```
+### 2. Write and use your own loader
+If you want to write your own loader, you need to create a class that implements ValidationMessagesLoader. The only required method is load() that must return an Observable. If your loader is synchronous, just use Observable.of to create an observable from your static value.
+
+```ts
+class CustomLoader implements ValidationMessagesLoader {
+    load(): Observable<any> {
+        //Your implementation...
+    }
+}
+```
+
+Once you've defined your loader, you can provide it in your NgModule by adding it to its providers property. Don't forget that you have to import ValidationMessagesModule as well:
+
+```ts
+@NgModule({
+    imports: [
+        BrowserModule,
+        //construct with your params
+        ValidationMessagesModule.forRoot({ provide: TranslateLoader, useFactory: () => new CustomLoader() }) 
+    ],
+    exports: [ValidationMessagesModule],
+})
+export class SharedModule {
+}
+```
 
 ## TODO
 This package it's creating on free times after university...and theses...
