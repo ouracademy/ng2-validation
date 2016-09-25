@@ -50,7 +50,7 @@ So you can instead do this:
 </div>
 ```
 
-And it will do the same in very uniform way in all your fields in every forms in all your views. This package will create validation messages for you. It contains predefined validation messages, but you can customize it (see [customizing](#customizing))
+And it will do the same in very uniform way in all your fields in every forms in all your views. This package will create validation messages for you. It contains predefined validation messages, but you can customize it (see [customizing](#customizing)).
 
 ## Installation
 Install the npm module by running:
@@ -70,11 +70,12 @@ map: {
 
 ## Usage
 The steps here are very similar to the [ng2-translate](https://github.com/ocombe/ng2-translate) package, because it's based on it.
+Alternative you can see the [demo app](https://github.com/ouracademy/ng2-validation/tree/master/demo) to have a more detail of the usage.
 
 #### 1. Import the `ValidationMessagesModule`:
 It is recommended to import `ValidationMessagesModule.forRoot()` in the NgModule of your application.
 
-The `forRoot` method is a convention for modules that provide a singleton service (such as the Angular 2 Router), you can also use it to configure the `ValidationMessagesLoader` . By default it will use the `MessageStaticLoader` and will load predefined messages for you, but you can provide another loader instead as a parameter of this method.
+The `forRoot` method is a convention for modules that provide a singleton service (such as the Angular 2 Router), you can also use it to configure the `ValidationMessagesLoader` . By default it will use the `MessageStaticLoader` and will load predefined messages for you, but you can provide another loader instead as a parameter of this method (see [customizing](#customizing)).
 
 ```ts
 import { NgModule }      from '@angular/core';
@@ -111,7 +112,59 @@ export class SharedModule {
 }
 ```
 
-#### 2. We are working on it...
+#### 2. Init the ValidationMessagesService for your application:
+```ts
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MessageBag, ValidationMessagesService } from 'ng2-custom-validation/src/index';
+
+@Component({
+    moduleId: module.id,
+    selector: 'hero-form-reactive3',
+    templateUrl: 'hero-form.component.html'
+})
+export class HeroFormReactiveComponent implements OnInit {
+
+    errors: MessageBag;
+    heroForm: FormGroup;
+
+    constructor(private fb: FormBuilder,
+        private validationMessagesService: ValidationMessagesService) { }
+        
+    ngOnInit(): void {
+        this.buildForm();
+    }
+    
+    buildForm(): void {
+        this.heroForm = this.fb.group({
+            'name': ['', [
+                Validators.required,
+                Validators.minLength(4),
+                Validators.maxLength(24)
+            ]]
+        });
+
+        this.heroForm.valueChanges
+            .subscribe(data => {
+                this.seeForErrors();
+            });
+    }
+
+    private seeForErrors() {
+        this.validationMessagesService
+            .build(this.heroForm)
+            .subscribe((errors: MessageBag) => this.errors = errors);
+    }
+```
+
+#### 3. Use it on your template:
+```html
+<label for="name">Name</label>
+<input id="name" type="text" class="form-control" required formControlName="name">
+<div *ngIf="errors.name" class="alert alert-danger">
+  {{ errors.name }}
+</div>
+```
 
 ## Validators
 This is the list of the supported validations (it will grow...)
@@ -127,7 +180,8 @@ This is the list of the supported validations (it will grow...)
 
 
 ## TODO
-This package for now is working with with Reactive Driven Forms, it wasn't tested with Template Driven Forms. 
-Probably it will work, if work send us a message.
+This package it's creating on free times after university...and theses...
+For now works with Reactive Driven Forms, it wasn't tested with Template Driven Forms. Probably it will work, if work send us a message.
+Also it doesn't work with Composite Form Groups (and unique Controls) and doesn't have a way to add more ErrorPlaceholderParser (this is if you create your own Validator, you can't add it to the validation messages to show..this will be fixed soon).
 
 There's a list of things that are in our roadmap. You can see it in the [TODO file](https://github.com/ouracademy/ng2-validation/blob/master/TODO)
