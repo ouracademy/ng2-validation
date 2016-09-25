@@ -12,7 +12,6 @@
     map: {
       app: 'demo', // the demo folder
       src: 'src', // the validation module by itself
-      json: 'npm:systemjs-plugin-json/json.js', // json plugin to load validation.js,
       // angular bundles,
       '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
       '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
@@ -41,11 +40,6 @@
       'angular2-in-memory-web-api': {
         main: './index.js',
         defaultExtension: 'js'
-      }
-    },
-    meta: {
-      'i18n/*.json': {
-        loader: 'json'
       }
     }
   });

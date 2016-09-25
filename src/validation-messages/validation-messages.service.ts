@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MessageBag } from '../message-bag';
-import { ValidationMessagesLoader } from './validation-messages-loader.service';
+import { ValidationMessagesLoader } from './loader/index';
 import { Observable } from 'rxjs/Observable';
 import { ValidationMessagesRules } from './validation-messages-rules';
 import { MessageParser } from '../message-parser/index';

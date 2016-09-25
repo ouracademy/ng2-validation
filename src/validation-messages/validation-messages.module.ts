@@ -1,23 +1,21 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { Http, HttpModule } from '@angular/http';
 import { ValidationMessagesService } from './validation-messages.service';
 
-import { ValidationMessagesLoader, StaticMessageLoader } from './validation-messages-loader.service';
+import { ValidationMessagesLoader, MessageStaticLoader } from './loader/index';
 
-export function messageLoaderFactory(http: Http) {
-    return new StaticMessageLoader(http);
+export function messageLoaderFactory() {
+    return new MessageStaticLoader;
 }
 
 @NgModule({
-    imports: [HttpModule],
+    imports: [],
     exports: [],
     declarations: []
 })
 export class ValidationMessagesModule {
     static forRoot(providedLoader: any = {
         provide: ValidationMessagesLoader,
-        useFactory: messageLoaderFactory,
-        deps: [Http]
+        useFactory: messageLoaderFactory
     }): ModuleWithProviders {
         return {
             ngModule: ValidationMessagesModule,
