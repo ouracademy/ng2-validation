@@ -1,12 +1,13 @@
 #ng2-validation
 
-A collection of classes to help handling display error messages on your form.
+A collection of classes to help handling display error messages on your form. (THIS PACKAGE IT'S ON CONSTRUCTION)
 
 * [Reason](#reason)
 * [Installation](#installation)
 * [Usage](#usage)
 * [Validators](#validators)
-* [FAQ](#faq)
+* [Customizing](#customizing)
+* [TODO](#todo)
 
 ## Reason
 
@@ -34,8 +35,6 @@ Tired to always write this in your angular 2 app:
 
 ```
 
-(The above is an example. This package for now is working with with Reactive Driven Forms, it wasn't tested with Template Driven Forms..probably it will work, if work send as a message)
-
 And repeat this to every field in every form in every view.
 This package deals with it, using a uniform approach to make validation messages based on the amazing [Laravel framework](https://laravel.com/docs/5.3/validation#working-with-error-messages).
 So you can instead do this: 
@@ -51,23 +50,7 @@ So you can instead do this:
 </div>
 ```
 
-And it will do the same in very uniform way in all your fields in every forms in all your views.
-So just customize your validation messages, like:
-
-```json
-{
-    "required": "The :attribute field is required.",
-    "minlength": "The :attribute field must be at least :min characters long.",
-    "maxlength": "The :attribute cannot be more than :max characters long.",
-    "pattern"  : "The :attribute format is invalid.",
-    "customAttributes" : {
-        "name" : "super name"
-    }
-}
-```
-
-So if you write a name with less than 4 characters, the template will show the message `The super name field must be at least 4 characters long.`. The `:attribute` placeholder will be replaced for super name because it's on `customAttributes`(if there isn't,  it will replace with the same field name - `name` in this case) and the `:min` placeholder with the corresponding validation rule (4 characters). 
-
+And it will do the same in very uniform way in all your fields in every forms in all your views. This package will create validation messages for you. It contains predefined validation messages, but you can customize it (see [customizing](#customizing))
 
 ## Installation
 Install the npm module by running:
@@ -81,30 +64,8 @@ Add to your `systemjs.config.js`
 ```js
 map: {
       // other stuff...
-      'ng2-custom-validation': 'npm:ng2-custom-validation',
-      json: 'npm:systemjs-plugin-json/json.js',
+      'ng2-custom-validation': 'npm:ng2-custom-validation'
     },
-```
-
-Also if you are using the default configurations, see bellow, you will probably add also this:
-```js
-map: {
-      // other stuff...and ng2-custom-validation of course
-      json: 'npm:systemjs-plugin-json/json.js',
-    },
-packages: {
-     // more stuff
-},
-meta: {
-      'i18n/*.json': {
-        loader: 'json'
-      }
-    }
-```
-
-And remember to install the systemjs-plugin-json
-```sh
-npm install systemjs-plugin-json --save
 ```
 
 ## Usage
@@ -113,10 +74,7 @@ The steps here are very similar to the [ng2-translate](https://github.com/ocombe
 #### 1. Import the `ValidationMessagesModule`:
 It is recommended to import `ValidationMessagesModule.forRoot()` in the NgModule of your application.
 
-The `forRoot` method is a convention for modules that provide a singleton service (such as the Angular 2 Router), you can also use it to configure the `ValidationMessagesLoader` . By default it will use the `StaticMessageLoader`, but you can provide another loader instead as a parameter of this method.
-
-For now ng2-custom-validation requires HttpModule from `@angular/http` (this will change soon).
-
+The `forRoot` method is a convention for modules that provide a singleton service (such as the Angular 2 Router), you can also use it to configure the `ValidationMessagesLoader` . By default it will use the `MessageStaticLoader` and will load predefined messages for you, but you can provide another loader instead as a parameter of this method.
 
 ```ts
 import { NgModule }      from '@angular/core';
@@ -153,25 +111,6 @@ export class SharedModule {
 }
 ```
 
-By default, only the `StaticMessageLoader` is available. It will search for files in i18n/*.json, if you want you can customize this behavior by changing the default prefix/suffix:
-
-```ts
-@NgModule({
-    imports: [
-        BrowserModule,
-        HttpModule,
-        ValidationMessagesModule.forRoot({ 
-          provide: ValidationMessagesLoader,
-          useFactory: (http: Http) => new StaticMessageLoader(http, '/assets/i18n', '.json'),
-          deps: [Http]
-        })
-    ],
-    exports: [BrowserModule, HttpModule, ValidationMessagesModule],
-})
-export class SharedModule {
-}
-```
-
 #### 2. We are working on it...
 
 ## Validators
@@ -184,6 +123,11 @@ This is the list of the supported validations (it will grow...)
 - maxlength
 - pattern
 
-## FAQ
-#### I'm getting an error `No provider for Http!`
-Because of the StaticMessageLoader you have to load the HttpModule from `@angular/http`, even if you don't use this Loader
+## Customizing
+
+
+## TODO
+This package for now is working with with Reactive Driven Forms, it wasn't tested with Template Driven Forms. 
+Probably it will work, if work send us a message.
+
+There's a list of things that are in our roadmap. You can see it in the [TODO file](https://github.com/ouracademy/ng2-validation/blob/master/TODO)
