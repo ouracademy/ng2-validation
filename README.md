@@ -240,7 +240,7 @@ Once you've defined your loader, you can provide it in your NgModule by adding i
     imports: [
         BrowserModule,
         //construct with your params
-        ValidationMessagesModule.forRoot({ provide: TranslateLoader, useFactory: () => new CustomLoader() }) 
+        ValidationMessagesModule.forRoot({ provide: ValidationMessagesLoader, useFactory: () => new CustomLoader() }) 
     ],
     exports: [ValidationMessagesModule],
 })
