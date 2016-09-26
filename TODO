@@ -8,3 +8,5 @@
 8. Add work with unique form control
 7. Integrate with https://github.com/ocombe/ng2-translate
 8. Remove src/index
+9. TypedMessageBag or MessageBag?
+10. Use npm link in demo to use ng2-custom-validation instead of use ../../src

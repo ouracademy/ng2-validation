@@ -70,6 +70,13 @@ map: {
       // other stuff...
       'ng2-custom-validation': 'npm:ng2-custom-validation'
     },
+packages: {
+    // other stuf...
+    'ng2-custom-validation': {
+        main: './index.js',
+        defaultExtension: 'js'
+    }
+}
 ```
 
 ## Usage
@@ -86,7 +93,7 @@ import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { AppComponent }           from './app.component';
-import { ValidationMessagesModule } from 'ng2-custom-validation/src/index';
+import { ValidationMessagesModule } from 'ng2-custom-validation';
 
 @NgModule({
   imports: [
@@ -120,7 +127,7 @@ export class SharedModule {
 ```ts
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MessageBag, ValidationMessagesService } from 'ng2-custom-validation/src/index';
+import { MessageBag, ValidationMessagesService } from 'ng2-custom-validation';
 
 @Component({
     moduleId: module.id,
@@ -196,11 +203,12 @@ defaultValidationMessages.customAttributes = {
 ```
 
 And import it in your NgModule(for example the RootComponent):
+
 ```ts
 import { NgModule }      from '@angular/core';
 import { AppComponent }           from './app.component';
 //...import modules
-import { ValidationMessagesModule } from 'ng2-custom-validation/src/index';
+import { ValidationMessagesModule } from 'ng2-custom-validation';
 import './custom-validation';
 
 @NgModule({
@@ -213,6 +221,7 @@ import './custom-validation';
 })
 export class AppModule { }
 ```
+
 ### 2. Write and use your own loader
 If you want to write your own loader, you need to create a class that implements ValidationMessagesLoader. The only required method is load() that must return an Observable. If your loader is synchronous, just use Observable.of to create an observable from your static value.
 
