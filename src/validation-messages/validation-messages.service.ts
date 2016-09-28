@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MessageBag } from '../message-bag';
 import { ValidationMessagesLoader } from './loader/index';
-import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { ValidationMessagesRules } from './validation-messages-rules';
 import { MessageParser } from '../message-parser/index';
-import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 @Injectable()
 export class ValidationMessagesService {
@@ -23,25 +23,17 @@ export class ValidationMessagesService {
      *  @returns a MessageBag (if no errors an empty MessageBag)  
      */
     public seeForErrors(watchingForm: FormGroup): Subject<MessageBag> {
-        let observable: Observable<MessageBag> = this.build(watchingForm);
+        this.formChanges.next(this.buildErrors(watchingForm));
         watchingForm.valueChanges
             .subscribe(data => {
-                observable = this.build(watchingForm);
-                observable.subscribe(v => {
-                    this.formChanges.next(v);
-                });
+                this.formChanges.next(this.buildErrors(watchingForm));
             });
 
         return this.formChanges;
     }
 
-    private build(watchingForm: FormGroup): Observable<MessageBag> {
+    private buildErrors(watchingForm: FormGroup): MessageBag {
         this.form = watchingForm;
-        return Observable.of(this.buildErrors());
-    }
-
-
-    private buildErrors(): MessageBag {
         this.errors = new MessageBag();
         if (this.messageWasLoaded) {
             Object.keys(this.form.controls).forEach((field: string) => {

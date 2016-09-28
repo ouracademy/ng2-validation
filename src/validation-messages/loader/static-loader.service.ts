@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/of';
 import { ValidationMessagesLoader } from './loader.service';
-import { defaultValidationMessages } from './default-validation-messages'; 
+import { defaultValidationMessages } from './default-validation-messages';
 
 @Injectable()
 export class MessageStaticLoader implements ValidationMessagesLoader {
