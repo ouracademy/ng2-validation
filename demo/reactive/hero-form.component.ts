@@ -17,7 +17,7 @@ export class HeroFormReactiveComponent implements OnInit {
 
     submitted = false;
 
-    errors: MessageBag;
+    errors: MessageBag = new MessageBag();
 
     heroForm: FormGroup;
 
@@ -59,17 +59,10 @@ export class HeroFormReactiveComponent implements OnInit {
             'fullName': ['', Validators.pattern('[a-zA-Z]*')] // An example of use regex pattern
         });
 
-        this.heroForm.valueChanges
-            .subscribe(data => {
-                this.seeForErrors();
-            });
-
-        this.seeForErrors(); // (re)set validation messages now
-    }
-
-    private seeForErrors() {
         this.validationMessagesService
-            .build(this.heroForm)
-            .subscribe((errors: MessageBag) => this.errors = errors);
+            .seeForErrors(this.heroForm)
+            .subscribe((errors: MessageBag) => {
+                this.errors = errors;
+            });
     }
 }

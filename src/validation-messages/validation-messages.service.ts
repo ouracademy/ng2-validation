@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { MessageBag } from '../message-bag';
 import { ValidationMessagesLoader } from './loader/index';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { ValidationMessagesRules } from './validation-messages-rules';
 import { MessageParser } from '../message-parser/index';
 import 'rxjs/add/observable/of';
@@ -12,16 +13,33 @@ export class ValidationMessagesService {
     private form: FormGroup;
     private errors: MessageBag;
     private validationMessagesRules: ValidationMessagesRules;
+    private formChanges: Subject<MessageBag>;
 
-    constructor(private messageLoader: ValidationMessagesLoader) { }
+    constructor(private messageLoader: ValidationMessagesLoader) {
+        this.formChanges = new Subject<MessageBag>();
+    }
 
     /** Create messages if there's errors in the form it's watching
      *  @returns a MessageBag (if no errors an empty MessageBag)  
      */
-    public build(watchingForm: FormGroup): Observable<MessageBag> {
+    public seeForErrors(watchingForm: FormGroup): Subject<MessageBag> {
+        let observable: Observable<MessageBag> = this.build(watchingForm);
+        watchingForm.valueChanges
+            .subscribe(data => {
+                observable = this.build(watchingForm);
+                observable.subscribe(v => {
+                    this.formChanges.next(v);
+                });
+            });
+
+        return this.formChanges;
+    }
+
+    private build(watchingForm: FormGroup): Observable<MessageBag> {
         this.form = watchingForm;
         return Observable.of(this.buildErrors());
     }
+
 
     private buildErrors(): MessageBag {
         this.errors = new MessageBag();
