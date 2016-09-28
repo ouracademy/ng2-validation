@@ -136,7 +136,7 @@ import { MessageBag, ValidationMessagesService } from 'ng2-custom-validation';
 })
 export class HeroFormReactiveComponent implements OnInit {
 
-    errors: MessageBag;
+    errors: MessageBag = new MessageBag();
     heroForm: FormGroup;
 
     constructor(private fb: FormBuilder,
@@ -155,17 +155,13 @@ export class HeroFormReactiveComponent implements OnInit {
             ]]
         });
 
-        this.heroForm.valueChanges
-            .subscribe(data => {
-                this.seeForErrors();
+        this.validationMessagesService
+            .seeForErrors(this.heroForm)
+            .subscribe((errors: MessageBag) => {
+                this.errors = errors;
             });
     }
 
-    private seeForErrors() {
-        this.validationMessagesService
-            .build(this.heroForm)
-            .subscribe((errors: MessageBag) => this.errors = errors);
-    }
 ```
 
 #### 3. Use it on your template:
@@ -207,7 +203,7 @@ And import it in your NgModule(for example the RootComponent):
 ```ts
 import { NgModule }      from '@angular/core';
 import { AppComponent }           from './app.component';
-//...import modules
+//...import other modules
 import { ValidationMessagesModule } from 'ng2-custom-validation';
 import './custom-validation';
 
