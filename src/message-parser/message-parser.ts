@@ -11,7 +11,7 @@ export class MessageParser {
     }
 
     parse(attribute: string): string {
-        return this.parseAttributePlaceHolders(attribute).parseErrorPlaceHolders();
+        return this.parseAttributePlaceHolders(attribute).parseErrorPlaceholders();
     }
 
     private parseAttributePlaceHolders(attribute: string): MessageParser {
@@ -23,45 +23,69 @@ export class MessageParser {
         return this;
     }
 
-    private parseErrorPlaceHolders(): string {
-        return ErrorMessageParserFactory.get(this.errorKey, this.errors).format(this.errorMessage);
+    private parseErrorPlaceholders(): string {
+        return ErrorPlaceholderParser.parse(this.errorMessage).with(this.errorKey, this.errors);
     }
 }
 
+class ErrorPlaceholderParser {
+    private error: any;
+    static parse(errorMessage: string): ErrorPlaceholderParser {
+        return new ErrorPlaceholderParser(errorMessage);
+    }
 
-class ErrorMessageParserFactory {
-    static get(errorKey: string, error: any): ErrorPlaceholderParser {
-        switch (errorKey) {
-            case 'minlength': return new MinLength(error);
-            case 'maxlength': return new MaxLength(error);
-            case 'required':
-            case 'pattern': // Not create a special ErrorPlaceholderParser because it's difficult to
-                            // a user to understand the Regular Expression Pattern
-                            return new NoFormat(error);
-            default: throw SyntaxError(`The ${errorKey} isn't a validation rule`);
+    private constructor(private errorMessage: string) { }
+
+    with(errorKey: string, error: any): string {
+        this.error = error;
+        const errorFormatRule = ErrorFormatRuleLoader.get(errorKey, error);
+
+        this.errorMessage = this.parseErrorMessage(errorFormatRule);
+        return this.errorMessage;
+    }
+
+    parseErrorMessage(errorFormatRule: ErrorFormatRule): string {
+        if (errorFormatRule.placeholders) {
+            return Object.keys(errorFormatRule.placeholders)
+                .map((placeholder) => {
+                    const valueRule = errorFormatRule.placeholders[placeholder];
+                    const errorValue = this.error[errorFormatRule.errorKey][valueRule];
+                    return this.errorMessage.replace(placeholder, errorValue);
+                })[0];
+        } else { // if no placeholders, return the same error message
+            return this.errorMessage;
         }
     }
 }
 
-abstract class ErrorPlaceholderParser {
-    constructor(protected error: any) { }
-    abstract format(message: string): string;
+interface ErrorFormatRule {
+    errorKey: string;
+    placeholders?: any;
 }
 
-class NoFormat extends ErrorPlaceholderParser {
-    format(message: string): string {
-        return message; // do nothing..
-    }
-}
+class ErrorFormatRuleLoader {
+    static errorFormatRule: ErrorFormatRule[] = [
+        {
+            errorKey: 'minlength',
+            placeholders: {
+                ':min': 'requiredLength'
+            }
+        },
+        {
+            errorKey: 'maxlength',
+            placeholders: {
+                ':max': 'requiredLength'
+            }
+        },
+        { errorKey: 'required' },
+        { errorKey: 'pattern' }
+    ];
 
-class MinLength extends ErrorPlaceholderParser {
-    format(message: string): string {
-        return message.replace(':min', this.error.minlength.requiredLength);
-    }
-}
-
-class MaxLength extends ErrorPlaceholderParser {
-    format(message: string): string {
-        return message.replace(':max', this.error.maxlength.requiredLength);
+    static get(errorKey: string, error: any): ErrorFormatRule {
+        const errorPlaceholder = ErrorFormatRuleLoader.errorFormatRule.find(x => x.errorKey === errorKey);
+        if (errorPlaceholder) {
+            return errorPlaceholder;
+        }
+        throw SyntaxError(`The ${errorKey} isn't a validation rule`);
     }
 }
