@@ -1,60 +1,59 @@
 {
-  "name": "ng2-custom-validation",
-  "version": "1.2.1",
-  "description": "A simple validation library for angular 2",
-  "main": "index.js",
-  "scripts": {
-    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
-    "lite": "lite-server",
-    "postinstall": "typings install",
-    "tsc": "tsc",
-    "tsc:w": "tsc -w",
-    "typings": "typings"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ouracademy/ng2-validation.git"
-  },
-  "keywords": [
-    "angular 2",
-    "ng2",
-    "validation",
-    "validate"
-  ],
-  "author": "Arthur Mauricio <this.arthur.email@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ouracademy/ng2-validation/issues"
-  },
-  "homepage": "https://github.com/ouracademy/ng2-validation#readme",
-  "dependencies": {
-    "@angular/common": "^2.0.0",
-    "@angular/compiler": "^2.0.0",
-    "@angular/core": "^2.0.0",
-    "@angular/forms": "^2.0.0",
-    "core-js": "^2.4.1",
-    "reflect-metadata": "^0.1.3",
-    "rxjs": "5.0.0-beta.12",
-    "zone.js": "^0.6.23"
-  },
-  "peerDependencies": {
-    "@angular/common": "^2.0.0",
-    "@angular/compiler": "^2.0.0",
-    "@angular/core": "^2.0.0",
-    "@angular/forms": "^2.0.0",
-    "core-js": "^2.4.1",
-    "reflect-metadata": "^0.1.3",
-    "rxjs": "5.0.0-beta.12",
-    "zone.js": "^0.6.23"
-  },
-  "devDependencies": {
-    "@angular/platform-browser": "2.0.0",
-    "@angular/platform-browser-dynamic": "2.0.0",
-    "bootstrap": "^3.3.6",
-    "concurrently": "^2.2.0",
-    "lite-server": "^2.2.2",
-    "systemjs": "0.19.27",
-    "typescript": "^2.0.2",
-    "typings": "^1.3.2"
-  }
+    "name": "ng2-custom-validation",
+    "version": "1.2.2",
+    "description": "A simple validation library for angular 2",
+    "main": "index.js",
+    "scripts": {
+        "start": "tsc && concurrently \"tsc -w\" \"lite-server\" ",
+        "lite": "lite-server",
+        "tsc": "tsc",
+        "tsc:w": "tsc -w"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ouracademy/ng2-validation.git"
+    },
+    "keywords": [
+        "angular 2",
+        "ng2",
+        "validation",
+        "validate",
+        "angular 2 validation messages",
+        "ng2 validation messages"
+    ],
+    "author": "Arthur Mauricio <this.arthur.email@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/ouracademy/ng2-validation/issues"
+    },
+    "homepage": "https://github.com/ouracademy/ng2-validation#readme",
+    "dependencies": {
+        "@angular/common": "^2.0.0",
+        "@angular/compiler": "^2.0.0",
+        "@angular/core": "^2.0.0",
+        "@angular/forms": "^2.0.0",
+        "core-js": "^2.4.1",
+        "rxjs": "5.0.0-beta.12",
+        "zone.js": "^0.6.25"
+    },
+    "peerDependencies": {
+        "@angular/common": "^2.0.0",
+        "@angular/compiler": "^2.0.0",
+        "@angular/core": "^2.0.0",
+        "@angular/forms": "^2.0.0",
+        "core-js": "^2.4.1",
+        "rxjs": "5.0.0-beta.12",
+        "zone.js": "^0.6.25"
+    },
+    "devDependencies": {
+        "@types/core-js": "^0.9.34",
+        "@types/node": "^6.0.45",
+        "@angular/platform-browser": "~2.1.1",
+        "@angular/platform-browser-dynamic": "~2.1.1",
+        "bootstrap": "^3.3.6",
+        "concurrently": "^3.0.0",
+        "lite-server": "^2.2.2",
+        "systemjs": "0.19.39",
+        "typescript": "^2.0.3"
+    }
 }
