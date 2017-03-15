@@ -1,17 +1,23 @@
-#ng2-custom-validation [![NPM version][npm-version-image]][npm-url] [![NPM downloads][npm-downloads-image]][npm-url] 
+# ng2-custom-validation [![NPM version][npm-version-image]][npm-url] [![NPM downloads][npm-downloads-image]][npm-url] 
 
 [npm-downloads-image]: http://img.shields.io/npm/dm/ng2-custom-validation.svg?style=flat
 [npm-version-image]: http://img.shields.io/npm/v/ng2-custom-validation.svg?style=flat
 [npm-url]: https://www.npmjs.com/package/ng2-custom-validation
 
-A collection of classes to help handling display error messages on your form. (THIS PACKAGE IT'S ON CONSTRUCTION)
+A collection of classes to help handling display error messages on your form.
+PLEASE REFER TO THE DEPRECATED BRANCH THIS IS THE README OF THE v2.0 THAT IS ON CONSTRUCTION
 
+* [Demo](#demo)
 * [Reason](#reason)
 * [Installation](#installation)
 * [Usage](#usage)
 * [Validators](#validators)
 * [Customizing](#customizing)
+* [Development](#development)
 * [TODO](#todo)
+
+## Demo
+https://ouracademy.github.io/ng2-custom-validation/demo/
 
 ## Reason
 
@@ -68,25 +74,25 @@ Add to your `systemjs.config.js`
 ```js
 map: {
       // other stuff...
-      'ng2-custom-validation': 'npm:ng2-custom-validation'
+      'ng2-custom-validation': 'node_modules/ng2-custom-validation/bundles/ng2-custom-validation.umd.js'
     },
 packages: {
     // other stuf...
     'ng2-custom-validation': {
-        main: './index.js',
         defaultExtension: 'js'
     }
 }
 ```
 
 ## Usage
-The steps here are very similar to the [ng2-translate](https://github.com/ocombe/ng2-translate) package, because it's based on it.
+The steps here are very similar to the [ngx-translate](https://github.com/ngx-translate/core) package, because it's based on it.
 Alternative you can see the [demo app](https://github.com/ouracademy/ng2-validation/tree/master/demo) to have a more detail of the usage.
 
 #### 1. Import the `ValidationMessagesModule`:
-It is recommended to import `ValidationMessagesModule.forRoot()` in the NgModule of your application.
 
-The `forRoot` method is a convention for modules that provide a singleton service (such as the Angular 2 Router), you can also use it to configure the `ValidationMessagesLoader` . By default it will use the `MessageStaticLoader` and will load predefined messages for you, but you can provide another loader instead as a parameter of this method (see [customizing](#customizing)).
+The [`forRoot`](https://angular.io/docs/ts/latest/guide/ngmodule.html#!#core-for-root) static method is a convention that provides and configures services at the same time.
+Make sure you only call this method in the root module of your application, most of the time called `AppModule`.
+This method allows you to configure the `ValidationMessagesModule` by specifying a loader, a parser and/or a missing validation messages handler, as it's described in [customizing](#customizing).
 
 ```ts
 import { NgModule }      from '@angular/core';
@@ -108,20 +114,24 @@ import { ValidationMessagesModule } from 'ng2-custom-validation';
 export class AppModule { }
 ```
 
-If you have multiple NgModules and you use one as a shared NgModule (that you import in all of your other NgModules), don't forget that you can use it to export the `ValidationMessagesModule` that you imported in order to avoid having to import it multiple times.
+If you use a [`SharedModule`](https://angular.io/docs/ts/latest/guide/ngmodule.html#!#shared-modules) that you import in multiple other feature modules,
+you can export the `ValidationMessagesModule` to make sure you don't have to import it in every module.
 
 ```ts
 @NgModule({
-    imports: [
-        BrowserModule,
-        HttpModule,
-        ValidationMessagesModule.forRoot()
-    ],
     exports: [BrowserModule, HttpModule, ValidationMessagesModule],
 })
 export class SharedModule {
 }
 ```
+
+> Note: Never call a `forRoot` static method in the `SharedModule`. You might end up with different instances of the service in your injector tree.
+
+##### Lazy loaded modules
+TODO
+
+##### AoT
+TODO
 
 #### 2. Init the ValidationMessagesService for your application:
 ```ts
@@ -174,7 +184,7 @@ export class HeroFormReactiveComponent implements OnInit {
 ```
 
 ## Validators
-This is the list of the supported validations (it will grow...)
+This is the list of the supported validations
 
 #### angular2 built-in validators
 
@@ -184,6 +194,9 @@ This is the list of the supported validations (it will grow...)
 - pattern
 
 ## Customizing
+
+TODO CHANGE EVERYTHING HERE: LOADER, PARSER, MISSING VALIDATION MESSAGES HANDLER
+
 There are two ways of customizing the validationMessages: extending the default validation messages or providing your own loader. In the [demo](https://github.com/ouracademy/ng2-validation/tree/master/demo) there are an example of using both ways.
 
 ### 1. Using defaultValidationMessages
@@ -242,6 +255,24 @@ Once you've defined your loader, you can provide it in your NgModule by adding i
 })
 export class SharedModule {
 }
+```
+
+## Development
+
+### Prepare your environment
+* Install [Node.js](http://nodejs.org/) and NPM (should come with)
+* Install local dev dependencies: `npm install` while current directory is this repo
+
+### Development server
+Run `npm start` to start a development server on port 8000 with auto reload + tests.
+
+### Testing
+Run `npm test` to run tests once or `npm run test:watch` to continually run tests.
+
+### Release
+* Bump the version in package.json (once the module hits 1.0 this will become automatic)
+```bash
+npm run release
 ```
 
 ## TODO
