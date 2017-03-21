@@ -13,6 +13,7 @@ PLEASE REFER TO THE DEPRECATED BRANCH THIS IS THE README OF THE v2.0 THAT IS ON 
 * [Usage](#usage)
 * [Validators](#validators)
 * [Customizing](#customizing)
+* [Integration with other packages](#integration)
 * [Development](#development)
 * [TODO](#todo)
 
@@ -194,12 +195,13 @@ This is the list of the supported validations
 - pattern
 
 ## Customizing
+You can customize the predefined messages (instead of the predefined message for the required Validator: "The {{attribute}} field is required", get "Please, fill the {{attribute}}", change the display name of an attribute - like instead of "email" display "email address"), the parser (instead of define the display value of an attribute with "{{attribute}}" use ":attribute" - if you prefer the Laravel style) or change the missing validation message handler.
 
-TODO CHANGE EVERYTHING HERE: LOADER, PARSER, MISSING VALIDATION MESSAGES HANDLER
+### 1. Predefined messages
 
 There are two ways of customizing the validationMessages: extending the default validation messages or providing your own loader. In the [demo](https://github.com/ouracademy/ng2-validation/tree/master/demo) there are an example of using both ways.
 
-### 1. Using defaultValidationMessages
+#### Using defaultValidationMessages
 Create your file of custom validation messages (for example `custom-validation`)
 ```ts
 import { defaultValidationMessages } from '../src';
@@ -231,31 +233,40 @@ import './custom-validation';
 export class AppModule { }
 ```
 
-### 2. Write and use your own loader
+#### Write and use your own loader
 If you want to write your own loader, you need to create a class that implements ValidationMessagesLoader. The only required method is load() that must return an Observable. If your loader is synchronous, just use Observable.of to create an observable from your static value.
 
 ```ts
 class CustomLoader implements ValidationMessagesLoader {
     load(): Observable<any> {
-        //Your implementation...
+        //Your own implementation...maybe like the HttpLoader of the ngx-translate/http-loader package 
     }
 }
 ```
 
-Once you've defined your loader, you can provide it in your NgModule by adding it to its providers property. Don't forget that you have to import ValidationMessagesModule as well:
+Once you've defined your loader, you can provide it in your NgModule by passing it in the `loader` parameter of the `forRoot` configuration . Don't forget that you have to import ValidationMessagesModule as well:
 
 ```ts
 @NgModule({
     imports: [
-        BrowserModule,
+        // other imports..
         //construct with your params
-        ValidationMessagesModule.forRoot({ provide: ValidationMessagesLoader, useFactory: () => new CustomLoader() }) 
+        ValidationMessagesModule.forRoot({ loader: {provide: ValidationMessagesLoader, useClass: CustomLoader }}) 
     ],
     exports: [ValidationMessagesModule],
 })
 export class SharedModule {
 }
 ```
+
+### 2. Custom your own parser
+The steps here are similar to the section [Write and use your own loader](#write-and-use-your-own-loader), with the difference of passing your custom parser to the `parser` parameter of the `forRoot` configuration and of course [defining all the predefined messages](#using-defaultvalidationmessages) (because the predefined messages are understood by this package by using the predefined parser). 
+
+### 3. Custom your own missingValidationMessagesHandler
+The steps here are similar to the section [Write and use your own loader](#write-and-use-your-own-loader).
+
+## Integration
+This package will work with the ngx-translate package, by using the HttpTranslateLoader.
 
 ## Development
 
