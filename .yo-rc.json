@@ -1,0 +1,14 @@
+{
+  "generator-angular-library": {
+    "githubUsername": "ouracademy",
+    "githubRepoName": "ng2-custom-validation",
+    "npmModuleName": "ng2-custom-validation",
+    "allowNg2InModuleName": true,
+    "moduleGlobal": "ng2CustomValidation",
+    "ngModuleName": "ValidationMessagesModule",
+    "selectorPrefix": " ",
+    "projectTitle": "ng2 custom validation",
+    "projectDescription": "A validation module for angular 2.0+ to make uniform error messages",
+    "authorName": "ArthurMauricioDelgadillo"
+  }
+}
