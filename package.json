@@ -1,7 +1,7 @@
 {
     "name": "ng2-custom-validation",
     "version": "1.3.0",
-    "description": "A validation module for angular 2.0+ to make uniform error messages",
+    "description": "A simple validation library for angular 2.0+ to make uniform error messages",
     "main": "./bundles/ng2-custom-validation.umd.js",
     "module": "./index.js",
     "typings": "./index.d.ts",
@@ -28,7 +28,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/ouracademy/ng2-custom-validation.git"
+        "url": "git+https://github.com/ouracademy/ng2-validation.git"
     },
     "keywords": [
         "angular",
@@ -42,9 +42,9 @@
     "author": "ArthurMauricioDelgadillo",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/ouracademy/ng2-custom-validation/issues"
+        "url": "https://github.com/ouracademy/ng2-validation/issues"
     },
-    "homepage": "https://github.com/ouracademy/ng2-custom-validation#readme",
+    "homepage": "https://github.com/ouracademy/ng2-validation#readme",
     "devDependencies": {
         "@angular/common": "^2.1.0",
         "@angular/compiler": "^2.1.0",
