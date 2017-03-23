@@ -18,7 +18,7 @@ PLEASE REFER TO THE DEPRECATED BRANCH THIS IS THE README OF THE v2.0 THAT IS ON 
 * [TODO](#todo)
 
 ## Demo
-https://ouracademy.github.io/ng2-custom-validation/demo/
+https://ouracademy.github.io/ng2-validation/demo/
 
 ## Reason
 
