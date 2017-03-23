@@ -150,8 +150,7 @@ export class HeroFormReactiveComponent implements OnInit {
     errors: MessageBag = new MessageBag();
     heroForm: FormGroup;
 
-    constructor(private fb: FormBuilder,
-        private validationMessagesService: ValidationMessagesService) { }
+    constructor(private fb: FormBuilder, private validationMessages: ValidationMessagesService) { }
         
     ngOnInit(): void {
         this.buildForm();
@@ -166,8 +165,8 @@ export class HeroFormReactiveComponent implements OnInit {
             ]]
         });
 
-        this.validationMessagesService
-            .seeForErrors(this.heroForm)
+        this.validationMessages
+            .from(this.heroForm)
             .subscribe((errors: MessageBag) => {
                 this.errors = errors;
             });

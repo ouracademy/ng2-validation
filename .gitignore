@@ -1,10 +1,6 @@
-typings/
-demo/*.js
-demo/**/*.js
-demo/*.map
-demo/**/*.map
-src/*.js
-src/**/*.js
-src/*.map
-src/**/*.map
+.idea/
+.DS_Store
 node_modules/
+coverage/
+npm-debug.log
+dist/
