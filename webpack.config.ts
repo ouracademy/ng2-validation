@@ -26,7 +26,10 @@ export default {
     extensions: ['.ts', '.js']
   },
   devServer: {
-    port: 8000,
+    //only in c9
+    host: process.env.IP,
+    port: 8080,
+    
     inline: true,
     hot: true,
     historyApiFallback: true
