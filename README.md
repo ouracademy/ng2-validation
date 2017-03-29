@@ -18,7 +18,7 @@ PLEASE REFER TO THE DEPRECATED BRANCH THIS IS THE README OF THE v2.0 THAT IS ON 
 * [TODO](#todo)
 
 ## Demo
-https://ouracademy.github.io/ng2-custom-validation/demo/
+https://ouracademy.github.io/ng2-validation/
 
 ## Reason
 
@@ -170,6 +170,9 @@ export class HeroFormReactiveComponent implements OnInit {
             .subscribe((errors: MessageBag) => {
                 this.errors = errors;
             });
+            
+        // or using observables ($errors must be of type Observable<MessageBag>)
+        // this.$errors = this.validationMessages.from(this.heroForm);
     }
 
 ```
@@ -181,6 +184,11 @@ export class HeroFormReactiveComponent implements OnInit {
 <div *ngIf="errors.name" class="alert alert-danger">
   {{ errors.name }}
 </div>
+<!-- Using observables you should use the async pipe
+<div *ngIf="(errors| async)?.name" class="alert alert-danger">
+  {{ (errors| async)?.name }}
+</div>
+-->
 ```
 
 ## Validators

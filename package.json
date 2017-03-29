@@ -39,7 +39,7 @@
         "angular validation messages",
         "ng validation messages"
     ],
-    "author": "ArthurMauricioDelgadillo",
+    "author": "Arthur Mauricio <this.arthur.email@gmail.com>",
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/ouracademy/ng2-validation/issues"
@@ -52,6 +52,8 @@
         "@angular/core": "^2.1.0",
         "@angular/platform-browser": "^2.1.0",
         "@angular/platform-browser-dynamic": "^2.1.0",
+        "@angular/common": "^2.1.0",
+        "@angular/forms": "^2.1.0",
         "@types/chai": "^3.4.30",
         "@types/html-webpack-plugin": "^2.11.2",
         "@types/jasmine": "2.2.33",
@@ -97,7 +99,7 @@
         "zone.js": "^0.8.4"
     },
     "peerDependencies": {
-        "@angular/core": "^2.0.0"
+        "@angular/core": ">=2.0.0 <5.0.0"
     },
     "config": {
         "commitizen": {
