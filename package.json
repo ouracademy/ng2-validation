@@ -52,6 +52,8 @@
         "@angular/core": "^2.1.0",
         "@angular/platform-browser": "^2.1.0",
         "@angular/platform-browser-dynamic": "^2.1.0",
+        "@angular/common": "^2.1.0",
+        "@angular/forms": "^2.1.0",
         "@types/chai": "^3.4.30",
         "@types/html-webpack-plugin": "^2.11.2",
         "@types/jasmine": "2.2.33",
