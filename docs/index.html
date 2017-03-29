@@ -85,8 +85,43 @@
                     </li>
             
             
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-file-code-o"></span>
+                            <span>Classes</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-classes-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-classes-links"
+                            >
+                                <li class="link">
+                                    <a href="classes/MessageBag.html" >MessageBag</a>
+                                </li>
+                                <li class="link">
+                                    <a href="classes/TypedMessageBag.html" >TypedMessageBag</a>
+                                </li>
+                        </ul>
+                    </li>
             
             
+                    <li class="chapter">
+                        <div class="simple">
+                            <span class="fa fa-long-arrow-down"></span>
+                            <span>Injectables</span>
+                            <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                    data-target="#xs-injectables-links"
+                                ></span>
+                        </div>
+                        <ul class="links collapse in"
+                                id="xs-injectables-links"
+                            >
+                                <li class="link">
+                                    <a href="injectables/ValidationMessagesService.html" >ValidationMessagesService</a>
+                                </li>
+                        </ul>
+                    </li>
             
             
             
@@ -174,8 +209,43 @@
                            </li>
                    
                    
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-file-code-o"></span>
+                                   <span>Classes</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#classes-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="classes-links"
+                   >
+                                       <li class="link">
+                                           <a href="classes/MessageBag.html" >MessageBag</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="classes/TypedMessageBag.html" >TypedMessageBag</a>
+                                       </li>
+                               </ul>
+                           </li>
                    
                    
+                           <li class="chapter">
+                               <div class="simple">
+                                   <span class="fa fa-long-arrow-down"></span>
+                                   <span>Injectables</span>
+                                   <span class="menu-toggler fa fa-angle-up" data-toggle="collapse"
+                                           data-target="#injectables-links"
+                   ></span>
+                               </div>
+                               <ul class="links collapse in"
+                                       id="injectables-links"
+                   >
+                                       <li class="link">
+                                           <a href="injectables/ValidationMessagesService.html" >ValidationMessagesService</a>
+                                       </li>
+                               </ul>
+                           </li>
                    
                    
                    
@@ -208,7 +278,7 @@
 <li><a href="#todo">TODO</a></li>
 </ul>
 <h2 id="demo">Demo</h2>
-<p><a href="https://ouracademy.github.io/ng2-custom-validation/demo/">https://ouracademy.github.io/ng2-custom-validation/demo/</a></p>
+<p><a href="https://ouracademy.github.io/ng2-validation/">https://ouracademy.github.io/ng2-validation/</a></p>
 <h2 id="reason">Reason</h2>
 <p>Tired to always write this in your angular 2 app:</p>
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"name"</span>&gt;</span>Name<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"name"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-control"</span><br>       <span class="hljs-attr">required</span> <span class="hljs-attr">minlength</span>=<span class="hljs-string">"4"</span> <span class="hljs-attr">maxlength</span>=<span class="hljs-string">"24"</span><br>       <span class="hljs-attr">name</span>=<span class="hljs-string">"name"</span> [(<span class="hljs-attr">ngModel</span>)]=<span class="hljs-string">"hero.name"</span><br>       #<span class="hljs-attr">name</span>=<span class="hljs-string">"ngModel"</span> &gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">"name.errors &amp;&amp; (name.dirty || name.touched)"</span><br>     <span class="hljs-attr">class</span>=<span class="hljs-string">"alert alert-danger"</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> [<span class="hljs-attr">hidden</span>]=<span class="hljs-string">"!name.errors.required"</span>&gt;</span><br>      Name is required<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> [<span class="hljs-attr">hidden</span>]=<span class="hljs-string">"!name.errors.minlength"</span>&gt;</span><br>      Name must be at least 4 characters long.<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> [<span class="hljs-attr">hidden</span>]=<span class="hljs-string">"!name.errors.maxlength"</span>&gt;</span><br>      Name cannot be more than 24 characters long.<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre><p>And repeat this to every field in every form in every view.<br>This package deals with it, using a uniform approach to make validation messages based on the amazing <a href="https://laravel.com/docs/5.3/validation#working-with-error-messages">Laravel framework</a>.<br>So you can instead do this: </p>
@@ -230,8 +300,8 @@
 <h5 id="aot">AoT</h5>
 <p>TODO</p>
 <h4 id="2-init-the-validationmessagesservice-for-your-application-">2. Init the ValidationMessagesService for your application:</h4>
-<pre><code class="hljs ts"><span class="hljs-keyword">import</span> { Component, OnInit } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/core'</span>;<br><span class="hljs-keyword">import</span> { FormGroup, FormBuilder, Validators } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/forms'</span>;<br><span class="hljs-keyword">import</span> { MessageBag, ValidationMessagesService } <span class="hljs-keyword">from</span> <span class="hljs-string">'ng2-custom-validation'</span>;<br><br><span class="hljs-meta">@Component</span>({<br>    moduleId: <span class="hljs-built_in">module</span>.id,<br>    selector: <span class="hljs-string">'hero-form-reactive3'</span>,<br>    templateUrl: <span class="hljs-string">'hero-form.component.html'</span><br>})<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> HeroFormReactiveComponent <span class="hljs-keyword">implements</span> OnInit {<br><br>    errors: MessageBag = <span class="hljs-keyword">new</span> MessageBag();<br>    heroForm: FormGroup;<br><br>    <span class="hljs-keyword">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> fb: FormBuilder, <span class="hljs-keyword">private</span> validationMessages: ValidationMessagesService</span>) { }<br><br>    ngOnInit(): <span class="hljs-built_in">void</span> {<br>        <span class="hljs-keyword">this</span>.buildForm();<br>    }<br><br>    buildForm(): <span class="hljs-built_in">void</span> {<br>        <span class="hljs-keyword">this</span>.heroForm = <span class="hljs-keyword">this</span>.fb.group({<br>            <span class="hljs-string">'name'</span>: [<span class="hljs-string">''</span>, [<br>                Validators.required,<br>                Validators.minLength(<span class="hljs-number">4</span>),<br>                Validators.maxLength(<span class="hljs-number">24</span>)<br>            ]]<br>        });<br><br>        <span class="hljs-keyword">this</span>.validationMessages<br>            .from(<span class="hljs-keyword">this</span>.heroForm)<br>            .subscribe(<span class="hljs-function">(<span class="hljs-params">errors: MessageBag</span>) =&gt;</span> {<br>                <span class="hljs-keyword">this</span>.errors = errors;<br>            });<br>    }</code></pre><h4 id="3-use-it-on-your-template-">3. Use it on your template:</h4>
-<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"name"</span>&gt;</span>Name<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"name"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-control"</span> <span class="hljs-attr">required</span> <span class="hljs-attr">formControlName</span>=<span class="hljs-string">"name"</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">"errors.name"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"alert alert-danger"</span>&gt;</span><br>  {{ errors.name }}<br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre><h2 id="validators">Validators</h2>
+<pre><code class="hljs ts"><span class="hljs-keyword">import</span> { Component, OnInit } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/core'</span>;<br><span class="hljs-keyword">import</span> { FormGroup, FormBuilder, Validators } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/forms'</span>;<br><span class="hljs-keyword">import</span> { MessageBag, ValidationMessagesService } <span class="hljs-keyword">from</span> <span class="hljs-string">'ng2-custom-validation'</span>;<br><br><span class="hljs-meta">@Component</span>({<br>    moduleId: <span class="hljs-built_in">module</span>.id,<br>    selector: <span class="hljs-string">'hero-form-reactive3'</span>,<br>    templateUrl: <span class="hljs-string">'hero-form.component.html'</span><br>})<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> HeroFormReactiveComponent <span class="hljs-keyword">implements</span> OnInit {<br><br>    errors: MessageBag = <span class="hljs-keyword">new</span> MessageBag();<br>    heroForm: FormGroup;<br><br>    <span class="hljs-keyword">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> fb: FormBuilder, <span class="hljs-keyword">private</span> validationMessages: ValidationMessagesService</span>) { }<br><br>    ngOnInit(): <span class="hljs-built_in">void</span> {<br>        <span class="hljs-keyword">this</span>.buildForm();<br>    }<br><br>    buildForm(): <span class="hljs-built_in">void</span> {<br>        <span class="hljs-keyword">this</span>.heroForm = <span class="hljs-keyword">this</span>.fb.group({<br>            <span class="hljs-string">'name'</span>: [<span class="hljs-string">''</span>, [<br>                Validators.required,<br>                Validators.minLength(<span class="hljs-number">4</span>),<br>                Validators.maxLength(<span class="hljs-number">24</span>)<br>            ]]<br>        });<br><br>        <span class="hljs-keyword">this</span>.validationMessages<br>            .from(<span class="hljs-keyword">this</span>.heroForm)<br>            .subscribe(<span class="hljs-function">(<span class="hljs-params">errors: MessageBag</span>) =&gt;</span> {<br>                <span class="hljs-keyword">this</span>.errors = errors;<br>            });<br><br>        <span class="hljs-comment">// or using observables ($errors must be of type Observable&lt;MessageBag&gt;)</span><br>        <span class="hljs-comment">// this.$errors = this.validationMessages.from(this.heroForm);</span><br>    }</code></pre><h4 id="3-use-it-on-your-template-">3. Use it on your template:</h4>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">label</span> <span class="hljs-attr">for</span>=<span class="hljs-string">"name"</span>&gt;</span>Name<span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"name"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"form-control"</span> <span class="hljs-attr">required</span> <span class="hljs-attr">formControlName</span>=<span class="hljs-string">"name"</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">div</span> *<span class="hljs-attr">ngIf</span>=<span class="hljs-string">"errors.name"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"alert alert-danger"</span>&gt;</span><br>  {{ errors.name }}<br><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br><span class="hljs-comment">&lt;!-- Using observables you should use the async pipe<br>&lt;div *ngIf="(errors| async)?.name" class="alert alert-danger"&gt;<br>  {{ (errors| async)?.name }}<br>&lt;/div&gt;<br>--&gt;</span></code></pre><h2 id="validators">Validators</h2>
 <p>This is the list of the supported validations</p>
 <h4 id="angular2-built-in-validators">angular2 built-in validators</h4>
 <ul>
