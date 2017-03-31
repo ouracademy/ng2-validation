@@ -12,7 +12,7 @@ export class ValidationMessagesService {
     }
 }
 
-class TypedMessageBag {
+export class TypedMessageBag {
     private messages: Map<string, Set<string>>;
 
     constructor() {
