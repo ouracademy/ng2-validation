@@ -89,6 +89,6 @@ export class DemoComponent implements OnInit {
     }
 
     addHero(): void {
-        
+        this.heroForm.reset();
     }
 }

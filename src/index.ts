@@ -10,7 +10,6 @@ export class ValidationMessagesService {
     public from(watchingForm: FormGroup): Observable<MessageBag> {
         return Observable.of(new MessageBag());
     }
-    
 }
 
 class TypedMessageBag {
@@ -22,7 +21,7 @@ class TypedMessageBag {
 
     add(field: string, message: string): void {
         if (this.has(field)) {
-            let fieldMessages = this.get(field).add(message);
+            let fieldMessages: Set<string> = this.get(field).add(message);
             this.messages.set(field, fieldMessages);
         } else {
             this.messages.set(field, new Set<string>().add(message));

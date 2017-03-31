@@ -9,8 +9,7 @@ import { ValidationMessagesService } from './index';
     HelloWorldComponent
   ],
   imports: [CommonModule],
-  exports: [ HelloWorldComponent],
-  providers:[]
+  exports: [ HelloWorldComponent]
 })
 export class ValidationMessagesModule {
 
